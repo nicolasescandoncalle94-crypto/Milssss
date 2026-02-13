@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Milsss… ✨</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg1:#03131b;
+  --bg2:#082839;
+  --aqua:#8ee6ff;
+  --gold:#ffd9a6;
+  --text:#eef8ff;
+  --muted:rgba(238,248,255,.68);
+  --glass:rgba(255,255,255,.06);
+  --stroke:rgba(255,255,255,.14);
+  --shadow:0 26px 110px rgba(0,0,0,.62);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  height:100vh;
+  overflow:hidden;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  color:var(--text);
+  background:
+    radial-gradient(900px 520px at 18% 22%, rgba(142,230,255,.14), transparent 60%),
+    radial-gradient(820px 560px at 80% 10%, rgba(255,217,166,.10), transparent 62%),
+    linear-gradient(180deg,var(--bg1),var(--bg2));
+}
+
+/* subtle moving glow */
+.bgGlow{
+  position:fixed; inset:-30%;
+  background:
+    radial-gradient(520px 380px at 30% 35%, rgba(142,230,255,.12), transparent 60%),
+    radial-gradient(560px 420px at 70% 55%, rgba(255,217,166,.10), transparent 62%);
+  filter: blur(20px);
+  animation: drift 14s ease-in-out infinite;
+  pointer-events:none;
+  opacity:.95;
+}
+@keyframes drift{
+  0%,100%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(6%, -4%, 0) scale(1.07)}
+}
+
+/* cinematic vignette */
+.vignette{
+  position:fixed; inset:0;
+  background:radial-gradient(80% 80% at 50% 35%, rgba(0,0,0,.05), rgba(0,0,0,.55));
+  pointer-events:none;
+}
+
+/* container/card */
+.wrap{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:26px 18px;
+  position:relative;
+}
+
+.card{
+  width:min(900px, 92vw);
+  background:var(--glass);
+  border:1px solid var(--stroke);
+  border-radius:28px;
+  padding:22px 20px 18px;
+  backdrop-filter: blur(16px);
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+.card:before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:
+    radial-gradient(620px 170px at 20% 0%, rgba(142,230,255,.16), transparent 70%),
+    radial-gradient(520px 190px at 90% 10%, rgba(255,217,166,.12), transparent 70%);
+  pointer-events:none;
+  filter: blur(2px);
+}
+
+.top{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+
+.pill{
+  font-size:12px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  border:1px solid rgba(255,255,255,.16);
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(0,0,0,.12);
+}
+
+.progress{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.dot{
+  width:9px; height:9px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.22);
+  background:rgba(255,255,255,.10);
+  transition: transform .35s ease, background .35s ease, border-color .35s ease;
+}
+.dot.on{
+  background:linear-gradient(135deg, rgba(142,230,255,.42), rgba(255,217,166,.30));
+  border-color: rgba(142,230,255,.45);
+  transform:scale(1.25);
+}
+
+.stage{
+  position:relative;
+  margin-top:14px;
+  min-height:460px;
+}
+
+.scene{
+  position:absolute;
+  inset:0;
+  padding:6px 4px;
+  opacity:0;
+  transform:translateY(18px);
+  transition: opacity 1s ease, transform 1s ease;
+  pointer-events:none;
+}
+.scene.active{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+
+h1{
+  font-family:"Playfair Display", serif;
+  font-size:clamp(34px, 5.8vw, 62px);
+  margin:14px 0 10px;
+  letter-spacing:-.02em;
+  line-height:1.04;
+}
+h2{
+  font-family:"Playfair Display", serif;
+  font-size:clamp(26px, 4.2vw, 40px);
+  margin:10px 0 10px;
+  letter-spacing:-.02em;
+}
+.sub{
+  margin:0 0 16px;
+  color:var(--muted);
+  line-height:1.75;
+  font-size:clamp(14px, 2.5vw, 16px);
+}
+
+.box{
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.05);
+  border-radius:20px;
+  padding:18px 16px;
+  line-height:1.9;
+  font-size:16px;
+}
+
+.hl{color:var(--gold); font-weight:650}
+
+/* suspense reveal lines */
+.line{
+  opacity:0;
+  transform:translateY(8px);
+  animation: appear 1.1s ease forwards;
+}
+.line:nth-child(1){animation-delay:.2s}
+.line:nth-child(2){animation-delay:1.1s}
+.line:nth-child(3){animation-delay:2.0s}
+.line:nth-child(4){animation-delay:2.9s}
+@keyframes appear{
+  to{opacity:1; transform:translateY(0)}
+}
+
+/* countdown */
+.countdown{
+  display:flex; gap:12px; flex-wrap:wrap;
+  margin:10px 0 16px;
+}
+.cd{
+  flex:1; min-width:120px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(0,0,0,.12);
+  border-radius:18px;
+  padding:14px 12px;
+  text-align:center;
+}
+.cd .num{font-size:30px; font-weight:700; letter-spacing:-.02em}
+.cd .lab{margin-top:4px; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:rgba(238,248,255,.62)}
+
+/* tacos glow */
+.tacos{
+  display:inline-block;
+  padding:0 7px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(142,230,255,.08);
+  box-shadow:0 0 0 rgba(142,230,255,0);
+}
+.tacosGlow{
+  animation: tacosGlow 2.2s ease-in-out infinite;
+}
+@keyframes tacosGlow{
+  0%,100%{transform:scale(1); box-shadow:0 0 0 rgba(142,230,255,0)}
+  50%{transform:scale(1.05); box-shadow:0 0 26px rgba(142,230,255,.22)}
+}
+
+.place{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:14px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(0,0,0,.12);
+  color:rgba(238,248,255,.82);
+  font-size:13px;
+}
+
+/* nav */
+.nav{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.10);
+}
+.btn{
+  border:1px solid rgba(255,255,255,.16);
+  padding:12px 14px;
+  border-radius:14px;
+  background:rgba(0,0,0,.16);
+  color:var(--text);
+  font-weight:650;
+  cursor:pointer;
+  transition: transform .08s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+  user-select:none;
+}
+.btn:hover{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.22)}
+.btn:active{transform:scale(.98)}
+.btn.primary{
+  background:linear-gradient(135deg, rgba(142,230,255,.22), rgba(255,217,166,.18));
+  border-color: rgba(142,230,255,.28);
+}
+.btn.cta{
+  background:linear-gradient(135deg, rgba(142,230,255,.30), rgba(255,217,166,.22));
+  border-color: rgba(142,230,255,.45);
+  box-shadow:0 0 0 rgba(142,230,255,0);
+  animation: ctaGlow 2.4s ease-in-out infinite;
+}
+@keyframes ctaGlow{
+  0%,100%{box-shadow:0 0 0 rgba(142,230,255,0)}
+  50%{box-shadow:0 0 40px rgba(142,230,255,.20)}
+}
+.btn:disabled{opacity:.45; cursor:not-allowed; animation:none}
+
+.footer{
+  margin-top:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  color:rgba(238,248,255,.55);
+  font-size:12.5px;
+}
+
+/* hearts */
+.hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:70;}
+.heart{
+  position:absolute;
+  font-size:18px;
+  opacity:.95;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
+  animation: rise 2.4s ease-out forwards;
+}
+@keyframes rise{
+  0%{transform:translateY(0) scale(.9); opacity:0}
+  15%{opacity:.95}
+  100%{transform:translateY(-300px) scale(1.4); opacity:0}
+}
+
+/* modal */
+.modal{
+  position:fixed; inset:0;
+  display:none; place-items:center;
+  background:rgba(0,0,0,.62);
+  padding:18px;
+  z-index:80;
+}
+.modal .boxm{
+  width:min(650px, 92vw);
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(10,25,35,.88);
+  backdrop-filter: blur(18px);
+  padding:18px 16px;
+  box-shadow:0 20px 120px rgba(0,0,0,.7);
+}
+.boxm h2{
+  font-family:"Playfair Display", serif;
+  font-size:32px;
+  margin:6px 0 8px;
+  line-height:1.1;
+}
+.boxm p{margin:0 0 14px; color:rgba(238,248,255,.72); line-height:1.7}
+.row{display:flex; gap:10px; flex-wrap:wrap}
+.small{font-size:12px; color:rgba(238,248,255,.55); margin-top:10px}
+
+/* mini intro */
+.intro{
+  display:inline-block;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(238,248,255,.55);
+  font-size:12px;
+}
+.introBar{
+  height:1px;
+  width:min(420px, 70vw);
+  margin:16px auto 0;
+  background:linear-gradient(90deg, transparent, rgba(142,230,255,.35), transparent);
+  opacity:.9;
+}
+
+/* reduce motion option */
+@media (prefers-reduced-motion: reduce){
+  .bgGlow, .tacosGlow, .btn.cta{animation:none}
+  .scene{transition:none}
+}
+</style>
+</head>
+
+<body>
+<div class="bgGlow"></div>
+<div class="vignette"></div>
+
+<div class="wrap">
+  <main class="card">
+    <div class="top">
+      <span class="pill">🌊 Máncora • ✨ Milsss & Nico</span>
+      <div class="progress" aria-label="Progreso">
+        <span class="dot on" id="d1"></span>
+        <span class="dot" id="d2"></span>
+        <span class="dot" id="d3"></span>
+        <span class="dot" id="d4"></span>
+        <span class="dot" id="d5"></span>
+        <span class="dot" id="d6"></span>
+        <span class="dot" id="d7"></span>
+        <span class="dot" id="d8"></span>
+      </div>
+    </div>
+
+    <div class="stage">
+      <!-- Scene 1 -->
+      <section class="scene active" data-scene="1">
+        <div class="intro">Una historia en 8 pasos</div>
+        <div class="introBar"></div>
+        <h1>Milsss…</h1>
+        <p class="sub">Te lo voy a decir <span class="hl">despacio</span>. Para que se sienta.</p>
+        <div class="box">
+          <div class="line">No quería mandarte “un mensaje más”.</div>
+          <div class="line">Quería que lo leyeras como una película…</div>
+          <div class="line">con calma… con intriga…</div>
+          <div class="line">y con esa sonrisa tuya al final. 😌</div>
+        </div>
+      </section>
+
+      <!-- Scene 2 -->
+      <section class="scene" data-scene="2">
+        <h2>Primero: el mood</h2>
+        <p class="sub">Activa el sonido si quieres. Es suave, tipo mar. (En iPhone toca el botón, si no, no suena).</p>
+        <div class="box">
+          <span class="hl">Regla del juego:</span> no avances rápido.<br>
+          Léelo como si fuera para ti (porque lo es).
+        </div>
+      </section>
+
+      <!-- Scene 3 -->
+      <section class="scene" data-scene="3">
+        <h2>Segundo: el tiempo</h2>
+        <p class="sub">Falta poco. Y eso lo hace mejor.</p>
+        <div class="countdown" aria-label="Countdown">
+          <div class="cd"><div class="num" id="days">—</div><div class="lab">Días</div></div>
+          <div class="cd"><div class="num" id="hours">—</div><div class="lab">Horas</div></div>
+          <div class="cd"><div class="num" id="minutes">—</div><div class="lab">Min</div></div>
+          <div class="cd"><div class="num" id="seconds">—</div><div class="lab">Seg</div></div>
+        </div>
+        <div class="box">
+          <span class="hl">10 minutos antes de las 9:00pm</span>…<br>
+          en nuestra habitación del hotel.<br>
+          <span style="color:var(--muted)">Sin prisa. Solo tú y yo.</span>
+        </div>
+      </section>
+
+      <!-- Scene 4 -->
+      <section class="scene" data-scene="4">
+        <h2>Tercero: el lugar</h2>
+        <p class="sub">Porque los lugares también se vuelven recuerdos.</p>
+        <div class="box">
+          Vamos a <span class="hl">La Sirena de Juan</span>.<br>
+          <div class="place">📍 La Sirena de Juan — Máncora</div>
+          <br>
+          Y sí… voy a mirarte como si esa noche fuera la primera vez.
+        </div>
+      </section>
+
+      <!-- Scene 5 -->
+      <section class="scene" data-scene="5">
+        <h2>Cuarto: la condición 😌</h2>
+        <p class="sub">Es una broma… pero también no es broma.</p>
+        <div class="box">
+          Quiero verte llegar en <span class="tacos tacosGlow">tacos</span> 🔥<br>
+          <span style="color:var(--muted)">(outfit statement. tú sabes.)</span><br><br>
+          Y yo llego con lo mío: buena vibra, cero prisa, y la intención clarísima.
+        </div>
+      </section>
+
+      <!-- Scene 6 -->
+      <section class="scene" data-scene="6">
+        <h2>Quinto: el detalle</h2>
+        <p class="sub">Lo importante no es el plan. Es con quién.</p>
+        <div class="box">
+          <div class="line">Que sea una noche bonita…</div>
+          <div class="line">pero sobre todo: <span class="hl">nuestra</span>.</div>
+          <div class="line">De esas que después uno recuerda y dice:</div>
+          <div class="line">“sí… ahí empezó algo serio”.</div>
+        </div>
+      </section>
+
+      <!-- Scene 7 -->
+      <section class="scene" data-scene="7">
+        <h2>Sexto: el casi final</h2>
+        <p class="sub">Ya te lo dije bonito… ahora me toca decirlo directo.</p>
+        <div class="box">
+          Si tú dices sí… yo me encargo de que lo nuestro siga creciendo con la misma energía con la que empezamos.
+          <br><br>
+          <span style="color:var(--muted)">Respira… falta una página.</span>
+        </div>
+      </section>
+
+      <!-- Scene 8 -->
+      <section class="scene" data-scene="8">
+        <h1>Entonces…</h1>
+        <p class="sub">Ahora sí. Sin vueltas.</p>
+        <div class="box">
+          <span class="hl">¿Aceptas ser mi San Valentín?</span> ❤️<br><br>
+          <span style="color:var(--muted)">Toca “Sí, acepto” para tu confirmación oficial ✨</span>
+        </div>
+      </section>
+    </div>
+
+    <div class="nav">
+      <button class="btn" id="prevBtn" disabled>◀ Atrás</button>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end">
+        <button class="btn" id="audioBtn">Activar sonido 🌊</button>
+        <button class="btn primary" id="nextBtn">Siguiente ▶</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span id="datePill">—</span>
+      <span>— Nico</span>
+    </div>
+  </main>
+</div>
+
+<div class="hearts" id="hearts"></div>
+
+<div class="modal" id="modal">
+  <div class="boxm">
+    <h2>Confirmado 🥹✨</h2>
+    <p>
+      Plan confirmado: <span class="hl">La Sirena de Juan</span>, Máncora.  
+      Tú llegas preciosa (y en <span class="hl">tacos</span>), yo llego con la sonrisa… y contigo del brazo. 🌊
+    </p>
+    <div class="row">
+      <button class="btn cta" id="whatsBtn">Enviar por WhatsApp</button>
+      <button class="btn" id="closeBtn">Cerrar</button>
+    </div>
+    <div class="small">
+      Tip: si quieres cambiar fecha/hora del countdown, es una sola línea dentro del código.
+    </div>
+  </div>
+</div>
+
+<script>
+  // ================== AJUSTE RÁPIDO ==================
+  // 10 min antes de 9pm:
+  const EVENT_DATE = new Date("February 14, 2026 20:50:00"); // <-- cambia aquí si quieres
+  // ================================================
+
+  // Fecha decorativa
+  const now = new Date();
+  const opts = { weekday: "long", year:"numeric", month:"long", day:"numeric" };
+  document.getElementById("datePill").textContent = now.toLocaleDateString("es-ES", opts);
+
+  // Scenes navigation
+  let current = 1;
+  const total = 8;
+  const scenes = [...document.querySelectorAll(".scene")];
+  const prevBtn = document.getElementById("prevBtn");
+  const nextBtn = document.getElementById("nextBtn");
+
+  function setDots(){
+    for(let i=1;i<=total;i++){
+      document.getElementById("d"+i).classList.toggle("on", i<=current);
+    }
+  }
+
+  function show(n){
+    current = n;
+    scenes.forEach(s => s.classList.toggle("active", Number(s.dataset.scene)===current));
+    prevBtn.disabled = current===1;
+
+    // suspense delay on every page
+    nextBtn.disabled = true;
+    const delay = (current===1) ? 1400 : (current===8 ? 650 : 900);
+    setTimeout(()=> nextBtn.disabled = false, delay);
+
+    if(current < total){
+      nextBtn.classList.remove("cta");
+      nextBtn.textContent = "Siguiente ▶";
+    }else{
+      nextBtn.classList.add("cta");
+      nextBtn.textContent = "Sí, acepto 💘";
+    }
+    setDots();
+  }
+
+  prevBtn.addEventListener("click", ()=> show(Math.max(1, current-1)));
+  nextBtn.addEventListener("click", ()=>{
+    if(current < total) show(current+1);
+    else accept();
+  });
+
+  // Countdown
+  function pad(n){ return String(n).padStart(2,"0"); }
+  function tick(){
+    const t = EVENT_DATE.getTime() - Date.now();
+    if(t <= 0){
+      document.getElementById("days").textContent = "0";
+      document.getElementById("hours").textContent = "00";
+      document.getElementById("minutes").textContent = "00";
+      document.getElementById("seconds").textContent = "00";
+      return;
+    }
+    const days = Math.floor(t / (1000*60*60*24));
+    const hours = Math.floor((t % (1000*60*60*24)) / (1000*60*60));
+    const minutes = Math.floor((t % (1000*60*60)) / (1000*60));
+    const seconds = Math.floor((t % (1000*60)) / 1000);
+
+    document.getElementById("days").textContent = days;
+    document.getElementById("hours").textContent = pad(hours);
+    document.getElementById("minutes").textContent = pad(minutes);
+    document.getElementById("seconds").textContent = pad(seconds);
+  }
+  setInterval(tick, 1000);
+  tick();
+
+  // Hearts + modal + WhatsApp
+  const hearts = document.getElementById("hearts");
+  const modal = document.getElementById("modal");
+
+  function popHearts(count=28){
+    const emojis = ["💘","💖","💗","💞","✨"];
+    const w = window.innerWidth;
+    for(let i=0;i<count;i++){
+      const span = document.createElement("span");
+      span.className = "heart";
+      span.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+      span.style.left = Math.max(10, Math.min(w-20, (w*0.18) + Math.random()*(w*0.64))) + "px";
+      span.style.bottom = (16 + Math.random()*30) + "px";
+      span.style.fontSize = (16 + Math.random()*14) + "px";
+      span.style.animationDuration = (2.0 + Math.random()*0.9) + "s";
+      hearts.appendChild(span);
+      setTimeout(()=> span.remove(), 2900);
+    }
+  }
+
+  function accept(){
+    popHearts(34);
+    modal.style.display = "grid";
+  }
+
+  document.getElementById("closeBtn").addEventListener("click", ()=> modal.style.display="none");
+  modal.addEventListener("click", (e)=> { if(e.target===modal) modal.style.display="none"; });
+
+  const message =
+`Milsss… ✨
+Te lo dije como una historia, paso a paso.
+
+¿Aceptas ser mi San Valentín? ❤️
+📍 La Sirena de Juan — Máncora
+
+Te espero 10 minutos antes de las 9:00pm en nuestra habitación del hotel para irnos juntos al restaurante.
+Y sí… quiero verte llegar en tacos 😌🔥`;
+
+  document.getElementById("whatsBtn").addEventListener("click", ()=>{
+    const url = "https://wa.me/?text=" + encodeURIComponent(message);
+    window.open(url, "_blank");
+  });
+
+  // Ocean sound (soft) using WebAudio. Requires user tap (iPhone).
+  let audioCtx = null;
+  let playing = false;
+  let nodes = [];
+  const audioBtn = document.getElementById("audioBtn");
+
+  function stopOcean(){
+    nodes.forEach(n => { try{ n.stop?.(); }catch(e){} try{ n.disconnect?.(); }catch(e){} });
+    nodes = [];
+    if(audioCtx){ try{ audioCtx.close(); }catch(e){} }
+    audioCtx = null;
+    playing = false;
+    audioBtn.textContent = "Activar sonido 🌊";
+  }
+
+  function startOcean(){
+    if(playing) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    const master = audioCtx.createGain();
+    master.gain.value = 0.06; // low volume
+    master.connect(audioCtx.destination);
+
+    // Pink-ish noise
+    const bufferSize = 2 * audioCtx.sampleRate;
+    const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) output[i] = (Math.random() * 2 - 1) * 0.22;
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = noiseBuffer;
+    noise.loop = true;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = "lowpass";
+    filter.frequency.value = 650;
+
+    const swell = audioCtx.createOscillator();
+    swell.type = "sine";
+    swell.frequency.value = 0.07; // slow swell
+
+    const swellGain = audioCtx.createGain();
+    swellGain.gain.value = 0.018;
+
+    const noiseGain = audioCtx.createGain();
+    noiseGain.gain.value = 0.020;
+
+    // swell modulates noise gain
+    const mod = audioCtx.createGain();
+    mod.gain.value = 0.012;
+    swell.connect(mod);
+    mod.connect(noiseGain.gain);
+
+    noise.connect(filter);
+    filter.connect(noiseGain);
+    noiseGain.connect(master);
+
+    swell.connect(swellGain);
+    swellGain.connect(master);
+
+    noise.start();
+    swell.start();
+
+    nodes.push(noise, filter, noiseGain, swell, swellGain, mod, master);
+    playing = true;
+    audioBtn.textContent = "Sonido ON 🌊";
+  }
+
+  audioBtn.addEventListener("click", async ()=>{
+    try{
+      if(!playing){
+        startOcean();
+        popHearts(10);
+      }else{
+        stopOcean();
+      }
+    }catch(e){
+      alert("Tu navegador bloqueó el audio. Toca de nuevo el botón.");
+    }
+  });
+
+  // Init
+  show(1);
+</script>
+</body>
+</html>
